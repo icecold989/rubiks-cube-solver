@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cube Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        textarea {
+            width: 300px;
+            height: 100px;
+            font-size: 14px;
+        }
+
+        #solution {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rubik's Cube Solver</h1>
+    <p>Enter your Rubik's Cube configuration as a 54-character string (e.g., <strong>UUUUUUUUURRRRRRRRRRDDDDDDDDDLLLLLLLLLBBBBBBBBBFFFFFFFFF</strong>)</p>
+    
+    <!-- Input for cube configuration -->
+    <textarea id="cube-input" placeholder="Enter the cube configuration here..."></textarea><br>
+    <button onclick="solveCube()">Solve Cube</button>
+
+    <h3>Solution:</h3>
+    <div id="solution"></div>
+
+    <script>
+        function solveCube() {
+            const cubeInput = document.getElementById("cube-input").value.trim();
+
+            // Check if the input is valid (54 characters long)
+            if (cubeInput.length !== 54) {
+                alert("Please enter a valid Rubik's Cube configuration (54 characters).");
+                return;
+            }
+
+            // Send the cube input to the backend API (replace with your server URL)
+            fetch('https://your-python-backend-url.com/solve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cube_input: cubeInput }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the solution received from the backend
+                document.getElementById("solution").innerText = data.solution;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("solution").innerText = "There was an error solving the cube.";
+            });
+        }
+    </script>
+</body>
+</html>
